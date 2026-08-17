@@ -16,6 +16,69 @@
 
     <style>
       body, p, h1, h2, h3, h4, h5, h6, span, div, button, input, textarea, select { font-family: 'Atkinson Hyperlegible','Merriweather',sans-serif; }
+      .speech-bubble {
+        position: absolute;
+        z-index: 10;
+        border: 3px solid #374151;
+        border-radius: 9999px;
+        background: #fff;
+        color: #1f2937;
+        text-align: center;
+        font-weight: 500;
+        line-height: 1.15;
+      }
+      .speech-bubble::before,
+      .speech-bubble::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 0;
+      }
+      .tail-bottom-left::before {
+        left: 68%; bottom: -25px;
+        border-left: 5px solid transparent;
+        border-right: 22px solid transparent;
+        border-top: 25px solid #374151;
+        transform: rotate(-13deg);
+      }
+      .tail-bottom-left::after {
+        left: calc(68% + 3px); bottom: -18px;
+        border-left: 4px solid transparent;
+        border-right: 17px solid transparent;
+        border-top: 20px solid #fff;
+        transform: rotate(-13deg);
+      }
+      .tail-bottom-right::before {
+        right: 19%; bottom: -25px;
+        border-left: 22px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 25px solid #374151;
+        transform: rotate(13deg);
+      }
+      .tail-bottom-right::after {
+        right: calc(19% + 3px); bottom: -18px;
+        border-left: 17px solid transparent;
+        border-right: 4px solid transparent;
+        border-top: 20px solid #fff;
+        transform: rotate(13deg);
+      }
+      .tail-left::before {
+        left: -23px; top: 54%;
+        border-top: 5px solid transparent;
+        border-bottom: 20px solid transparent;
+        border-right: 24px solid #374151;
+        transform: rotate(-9deg);
+      }
+      .tail-left::after {
+        left: -16px; top: calc(54% + 2px);
+        border-top: 4px solid transparent;
+        border-bottom: 15px solid transparent;
+        border-right: 18px solid #fff;
+        transform: rotate(-9deg);
+      }
+      @media (max-width: 640px) {
+        .speech-bubble { position: relative; inset: auto !important; transform: none !important; }
+      }
     </style></head>
 
 <body class="min-h-screen flex items-center justify-center">
@@ -26,11 +89,11 @@
     <p class="mb-6 text-left text-2xl italic leading-relaxed text-cyan-700 max-lg:text-xl max-sm:text-lg"><span data-id="pg024_n0002">(e) Study how to make a polite request or offer using the word &#x2018;some&#x2019; in the examples provided.</span> <span data-id="pg024_n0003">Then, practise talking/signing with your fellow pupils.</span></p>
 
     <div class="mb-8">
-      <div class="relative mx-auto flex max-w-[58rem] justify-center max-sm:flex max-sm:flex-col max-sm:items-center max-sm:gap-3">
-        <img data-id="pg024_im015" src="images/pg024_im015.jpg" alt="A waitress takes an order from a seated man in a restaurant while other customers sit at nearby tables." class="h-auto max-w-full rounded-lg w-[34rem] max-lg:w-full max-sm:order-2" style="max-width: 100%; height: auto;">
-        <div class="absolute left-0 top-2 z-10 max-w-[17rem] rounded-full border-4 border-gray-700 bg-white px-6 py-5 text-center text-2xl leading-tight text-gray-800 max-lg:left-2 max-lg:top-0 max-lg:max-w-[14rem] max-lg:text-xl max-sm:static max-sm:order-1 max-sm:mb-1 max-sm:w-full max-sm:max-w-[12rem] max-sm:px-5 max-sm:py-6 max-sm:text-lg" data-id="pg024_n0005">Would you like some orange juice?</div>
-        <div class="absolute right-0 top-14 z-10 max-w-[17rem] rounded-full border-4 border-gray-700 bg-white px-6 py-4 text-center text-2xl leading-tight text-gray-800 max-lg:right-4 max-lg:top-6 max-lg:max-w-[13rem] max-lg:text-xl max-sm:static max-sm:order-3 max-sm:ml-auto max-sm:w-full max-sm:max-w-[10rem] max-sm:px-4 max-sm:py-6 max-sm:text-lg" data-id="pg024_n0006">No, thank you.</div>
-        <div class="absolute right-4 top-28 z-10 max-w-[22rem] rounded-full border-4 border-gray-700 bg-white px-8 py-5 text-center text-2xl leading-tight text-gray-800 max-lg:right-2 max-lg:top-20 max-lg:max-w-[18rem] max-lg:text-xl max-sm:static max-sm:order-4 max-sm:ml-auto max-sm:w-full max-sm:max-w-[14rem] max-sm:px-5 max-sm:py-6 max-sm:text-lg" data-id="pg024_n0007">Can I have some water, please?</div>
+      <div class="relative mx-auto max-w-[58rem] pb-2 max-sm:flex max-sm:flex-col max-sm:items-center max-sm:gap-3">
+        <img data-id="pg024_im015" src="images/pg024_im015.jpg" alt="A waitress takes an order from a seated man in a restaurant while other customers sit at nearby tables." class="mx-auto block h-auto w-[34rem] max-w-full" style="max-width: 100%; height: auto;">
+        <div class="speech-bubble tail-bottom-left left-0 top-0 w-[17rem] px-6 py-5 text-2xl max-lg:left-2 max-lg:w-[14rem] max-lg:text-xl max-sm:order-1 max-sm:w-[13rem] max-sm:px-5 max-sm:py-4 max-sm:text-lg" data-id="pg024_n0005">Would you like some orange juice?</div>
+        <div class="speech-bubble tail-bottom-right right-0 top-10 w-[14rem] px-5 py-4 text-2xl max-lg:right-3 max-lg:w-[12rem] max-lg:text-xl max-sm:order-2 max-sm:w-[11rem] max-sm:px-4 max-sm:py-3 max-sm:text-lg" data-id="pg024_n0006">No, thank you.</div>
+        <div class="speech-bubble tail-bottom-right right-4 w-[22rem] px-8 py-5 text-2xl max-lg:right-2 max-lg:top-24 max-lg:w-[18rem] max-lg:text-xl max-sm:order-3 max-sm:w-[15rem] max-sm:px-5 max-sm:py-4 max-sm:text-lg" style="top: 7.25rem;" data-id="pg024_n0007">Can I have some water, please?</div>
       </div>
     </div>
 
@@ -44,11 +107,11 @@
       <div class="grid grid-cols-2 max-sm:grid-cols-1">
         <div class="relative min-h-[28rem] border-r-2 border-cyan-300 bg-white p-5 max-sm:min-h-0 max-sm:border-r-0 max-sm:border-b-2">
           <img data-id="pg024_im016" src="images/pg024_im016.jpg" alt="A waitress writes in her notepad as a man at a restaurant table speaks to her, with other diners seated behind them." class="h-auto max-w-full rounded-lg" style="max-width: 100%; height: auto;">
-          <div class="absolute left-1/2 top-8 z-10 w-[16rem] -translate-x-1/2 rounded-full border-4 border-gray-700 bg-white px-6 py-5 text-center text-2xl leading-tight text-gray-800 max-lg:top-6 max-lg:w-[15rem] max-lg:text-xl max-sm:top-4 max-sm:w-[13rem] max-sm:text-lg" data-id="pg024_n0021">Is there any fried chicken?</div>
+          <div class="speech-bubble tail-bottom-right left-1/2 top-8 w-[16rem] -translate-x-1/2 px-6 py-5 text-2xl max-lg:top-6 max-lg:w-[14rem] max-lg:text-xl max-sm:mx-auto max-sm:mt-3 max-sm:w-[13rem] max-sm:text-lg" data-id="pg024_n0021">Is there any fried chicken?</div>
         </div>
         <div class="relative min-h-[28rem] bg-white p-5 max-sm:min-h-0">
           <img src="images/pg024_im016.jpg" alt="A waitress writes in her notepad as a man at a restaurant table speaks to her, with other diners seated behind them." class="h-auto max-w-full rounded-lg opacity-95" style="max-width: 100%; height: auto;">
-          <div class="absolute left-1/2 top-6 z-10 w-[20rem] -translate-x-1/2 rounded-full border-4 border-gray-700 bg-white px-6 py-5 text-center text-2xl leading-tight text-gray-800 max-lg:w-[18rem] max-lg:text-xl max-sm:top-4 max-sm:w-[15rem] max-sm:text-lg" data-id="pg024_n0024">No, we don&#x2019;t have any fried chicken and we don&#x2019;t have fried fish either.</div>
+          <div class="speech-bubble tail-left left-1/2 top-6 w-[20rem] -translate-x-1/2 px-6 py-5 text-2xl max-lg:w-[17rem] max-lg:text-xl max-sm:mx-auto max-sm:mt-3 max-sm:w-[15rem] max-sm:text-lg" data-id="pg024_n0024">No, we don&#x2019;t have any fried chicken and we don&#x2019;t have fried fish either.</div>
         </div>
       </div>
     </div>
@@ -58,7 +121,7 @@
 
     <div class="relative z-50" id="interface-container"></div>
     <div class="relative z-50" id="nav-container"></div>
-    <script src="./assets/offline-preloader.js?v=0384e63b7c07"></script>
+    <script src="./assets/offline-preloader.js?v=dad24bd56e22"></script>
     <script src="./assets/scorm.js"></script>
     <script src="./assets/base.bundle.local.js"></script>
 </body>
