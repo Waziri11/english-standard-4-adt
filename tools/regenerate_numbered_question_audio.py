@@ -5,13 +5,17 @@ import argparse
 import html
 import json
 import re
-import subprocess
+import asyncio
+import sys
 import tempfile
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
 I18N = ROOT / "content" / "i18n" / "en"
+VENDOR = ROOT / "tools" / "_vendor"
+if VENDOR.exists():
+    sys.path.insert(0, str(VENDOR))
 NUMBER_WORDS = {
     1: "one",
     2: "two",
@@ -39,7 +43,12 @@ QUESTION_RE = re.compile(r"^\s*(\d+)[.)]\s+(.+\?)\s*$", re.DOTALL)
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--voice", default="Samantha")
+    parser.add_argument("--voice", default="en-TZ-ImaniNeural")
+    parser.add_argument("--concurrency", type=int, default=6)
+    parser.add_argument(
+        "--id-prefix",
+        help="Only regenerate text IDs beginning with this prefix",
+    )
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
@@ -47,6 +56,8 @@ def main() -> None:
     audios = json.loads((I18N / "audios.json").read_text(encoding="utf-8"))
     questions = []
     for text_id, visible_text in texts.items():
+        if args.id_prefix and not text_id.startswith(args.id_prefix):
+            continue
         match = QUESTION_RE.match(visible_text)
         if not match:
             continue
@@ -68,25 +79,41 @@ def main() -> None:
             print(f"{text_id}\t{filename}\t{spoken_text}")
         return
 
-    with tempfile.TemporaryDirectory(prefix="adt-question-audio-") as tmp:
-        tmpdir = Path(tmp)
-        for index, (text_id, filename, spoken_text) in enumerate(questions, 1):
-            aiff = tmpdir / f"{text_id}.aiff"
-            mp3 = tmpdir / filename
-            subprocess.run(
-                ["say", "-v", args.voice, "-o", str(aiff), spoken_text], check=True
-            )
-            subprocess.run(
-                [
-                    "ffmpeg", "-loglevel", "error", "-y", "-i", str(aiff),
-                    "-ar", "24000", "-ac", "1", "-codec:a", "libmp3lame",
-                    "-b:a", "64k", str(mp3),
-                ],
-                check=True,
-            )
-            mp3.replace(I18N / "audio" / filename)
-            if index % 25 == 0 or index == len(questions):
-                print(f"Generated {index}/{len(questions)}")
+    async def generate() -> None:
+        import edge_tts
+
+        semaphore = asyncio.Semaphore(args.concurrency)
+        with tempfile.TemporaryDirectory(prefix="adt-question-audio-") as tmp:
+            tmpdir = Path(tmp)
+            completed = 0
+
+            async def render(text_id: str, filename: str, spoken_text: str) -> None:
+                nonlocal completed
+                async with semaphore:
+                    mp3 = tmpdir / filename
+                    last_error: Exception | None = None
+                    for attempt in range(4):
+                        try:
+                            await edge_tts.Communicate(
+                                spoken_text, args.voice, rate="-4%"
+                            ).save(str(mp3))
+                            break
+                        except Exception as error:
+                            last_error = error
+                            mp3.unlink(missing_ok=True)
+                            await asyncio.sleep(1.5 * (attempt + 1))
+                    else:
+                        raise RuntimeError(
+                            f"TTS failed for {text_id}: {last_error}"
+                        )
+                    mp3.replace(I18N / "audio" / filename)
+                    completed += 1
+                    if completed % 25 == 0 or completed == len(questions):
+                        print(f"Generated {completed}/{len(questions)}", flush=True)
+
+            await asyncio.gather(*(render(*question) for question in questions))
+
+    asyncio.run(generate())
 
 
 if __name__ == "__main__":
