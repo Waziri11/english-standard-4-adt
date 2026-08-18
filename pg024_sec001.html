@@ -76,8 +76,37 @@
         border-right: 18px solid #fff;
         transform: rotate(-9deg);
       }
+      .some-example {
+        position: relative;
+        width: min(100%, 902px);
+        margin-inline: auto;
+        padding-top: 5.5rem;
+        padding-bottom: 5rem;
+      }
+      .some-example img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+      .some-offer {
+        left: -1.5%;
+        top: 0;
+        width: 38%;
+      }
+      .some-reply {
+        right: -1%;
+        top: 4.5rem;
+        width: 25%;
+      }
+      .some-request {
+        right: 1%;
+        bottom: 0;
+        width: 38%;
+      }
       @media (max-width: 640px) {
         .speech-bubble { position: relative; inset: auto !important; transform: none !important; }
+        .some-example { display: flex; width: 100%; padding: 0; }
+        .some-example img { order: 2; }
       }
     </style></head>
 
@@ -89,11 +118,11 @@
     <p class="mb-6 text-left text-2xl italic leading-relaxed text-cyan-700 max-lg:text-xl max-sm:text-lg"><span data-id="pg024_n0002">(e) Study how to make a polite request or offer using the word &#x2018;some&#x2019; in the examples provided.</span> <span data-id="pg024_n0003">Then, practise talking/signing with your fellow pupils.</span></p>
 
     <div class="mb-8">
-      <div class="relative mx-auto max-w-[58rem] pb-2 max-sm:flex max-sm:flex-col max-sm:items-center max-sm:gap-3">
-        <img data-id="pg024_im015" src="images/pg024_im015.jpg" alt="A waitress takes an order from a seated man in a restaurant while other customers sit at nearby tables." class="mx-auto block h-auto w-[34rem] max-w-full" style="max-width: 100%; height: auto;">
-        <div class="speech-bubble tail-bottom-left left-0 top-0 w-[17rem] px-6 py-5 text-2xl max-lg:left-2 max-lg:w-[14rem] max-lg:text-xl max-sm:order-1 max-sm:w-[13rem] max-sm:px-5 max-sm:py-4 max-sm:text-lg" data-id="pg024_n0005">Would you like some orange juice?</div>
-        <div class="speech-bubble tail-bottom-right right-0 top-10 w-[14rem] px-5 py-4 text-2xl max-lg:right-3 max-lg:w-[12rem] max-lg:text-xl max-sm:order-2 max-sm:w-[11rem] max-sm:px-4 max-sm:py-3 max-sm:text-lg" data-id="pg024_n0006">No, thank you.</div>
-        <div class="speech-bubble tail-bottom-right right-4 w-[22rem] px-8 py-5 text-2xl max-lg:right-2 max-lg:top-24 max-lg:w-[18rem] max-lg:text-xl max-sm:order-3 max-sm:w-[15rem] max-sm:px-5 max-sm:py-4 max-sm:text-lg" style="top: 7.25rem;" data-id="pg024_n0007">Can I have some water, please?</div>
+      <div class="some-example max-sm:flex-col max-sm:items-center max-sm:gap-3">
+        <img data-id="pg024_im015" src="images/pg024_im015.jpg" alt="A waitress takes an order from a seated man in a restaurant while other customers sit at nearby tables.">
+        <div class="speech-bubble some-offer tail-bottom-left px-6 py-5 text-2xl max-lg:text-xl max-sm:order-1 max-sm:w-[13rem] max-sm:px-5 max-sm:py-4 max-sm:text-lg" data-id="pg024_n0005">Would you like some orange juice?</div>
+        <div class="speech-bubble some-reply tail-bottom-right px-5 py-4 text-2xl max-lg:text-xl max-sm:order-3 max-sm:w-[11rem] max-sm:px-4 max-sm:py-3 max-sm:text-lg" data-id="pg024_n0006">No, thank you.</div>
+        <div class="speech-bubble some-request tail-bottom-right px-8 py-5 text-2xl max-lg:text-xl max-sm:order-4 max-sm:w-[15rem] max-sm:px-5 max-sm:py-4 max-sm:text-lg" data-id="pg024_n0007">Can I have some water, please?</div>
       </div>
     </div>
 
