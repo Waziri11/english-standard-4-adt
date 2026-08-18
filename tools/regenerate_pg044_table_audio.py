@@ -40,7 +40,7 @@ def speech_overrides(texts: dict[str, str]) -> dict[str, str]:
     return speech
 
 
-async def generate(concurrency: int, start_row: int) -> None:
+async def generate(concurrency: int, start_row: int, requested: set[str]) -> None:
     import edge_tts
 
     texts = json.loads((I18N / "texts.json").read_text(encoding="utf-8"))
@@ -54,6 +54,8 @@ async def generate(concurrency: int, start_row: int) -> None:
     items: list[tuple[str, str, str]] = []
     for text_id, spoken_text in overrides.items():
         if text_id not in allowed_ids:
+            continue
+        if requested and text_id not in requested:
             continue
         items.append((text_id, spoken_text, audios[text_id]))
         easy_id = f"{text_id}_easy_read"
@@ -78,6 +80,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--concurrency", type=int, default=4)
     parser.add_argument("--start-row", type=int, choices=range(1, 6), default=1)
+    parser.add_argument("--ids", default="", help="Comma-separated base text IDs")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
     texts = json.loads((I18N / "texts.json").read_text(encoding="utf-8"))
@@ -85,7 +88,8 @@ def main() -> None:
         for text_id, speech in speech_overrides(texts).items():
             print(f"{text_id}\t{speech}")
         return
-    asyncio.run(generate(args.concurrency, args.start_row))
+    requested = {text_id.strip() for text_id in args.ids.split(",") if text_id.strip()}
+    asyncio.run(generate(args.concurrency, args.start_row, requested))
 
 
 if __name__ == "__main__":
