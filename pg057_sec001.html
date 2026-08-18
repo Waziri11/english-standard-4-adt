@@ -16,45 +16,83 @@
 
     <style>
       body, p, h1, h2, h3, h4, h5, h6, span, div, button, input, textarea, select { font-family: 'Atkinson Hyperlegible','Merriweather',sans-serif; }
+      html, body, main { width: 100%; }
+      #content {
+        width: 100% !important;
+        max-width: 72rem !important;
+        margin-inline: auto !important;
+        box-sizing: border-box;
+      }
+      section[data-section-id="pg057_sec001"] {
+        display: block !important;
+        width: min(100%, 56rem) !important;
+        max-width: 56rem !important;
+        margin-inline: auto !important;
+        box-sizing: border-box;
+      }
+      #market-dialogue,
+      #market-dialogue > p,
+      #market-dialogue .book-dialogue-line {
+        width: 100% !important;
+        max-width: none !important;
+        box-sizing: border-box;
+      }
+      #market-dialogue .book-dialogue-line {
+        display: grid;
+        grid-template-columns: 5.25rem minmax(0, 1fr);
+        column-gap: 0.9rem;
+        color: #27272a;
+        font-weight: 400;
+        font-size: 1.25rem;
+        line-height: 1.38;
+      }
+      #market-dialogue .book-dialogue-line strong {
+        font-weight: 700;
+      }
+      #market-dialogue .book-dialogue-line[data-speaker="Juma"] strong { color: #dc2626; }
+      #market-dialogue .book-dialogue-line[data-speaker="Hellen"] strong { color: #0d9488; }
+      @media (max-width: 640px) {
+        section[data-section-id="pg057_sec001"] { padding-inline: 1rem !important; }
+        #market-dialogue .book-dialogue-line {
+          grid-template-columns: 4.5rem minmax(0, 1fr);
+          column-gap: 0.5rem;
+          font-size: 1rem;
+        }
+      }
     </style></head>
 
 <body class="min-h-screen flex items-center justify-center">
     <main class="w-full">
       <div id="content" class="mx-auto w-full max-w-6xl space-y-8 bg-white px-6 py-8 max-lg:px-4 max-sm:space-y-5 max-sm:px-3 opacity-0">
-<section data-section-type="activity_open_ended_answer" data-section-id="pg057_sec001" class="max-w-4xl mx-auto bg-white/90 rounded-3xl shadow-lg px-14 py-12 text-left text-gray-800 max-lg:px-8 max-lg:py-10 max-sm:px-5 max-sm:py-6" aria-label="Questions" role="activity">
-    <div class="space-y-3 text-[1.05rem] leading-relaxed max-lg:text-base max-sm:text-sm">
-      <p class="block"><span data-id="pg057_n0002" class="text-red-600 font-bold">Juma: Alright, anything else?</span></p>
-      <p class="block"><span data-id="pg057_n0003" class="text-teal-700 font-bold">Hellen: I would also like to buy some maize flour!</span></p>
-      <p class="block"><span data-id="pg057_n0004" class="text-red-600 font-bold">Juma: We have it, how many kilograms?</span></p>
-      <p class="block"><span data-id="pg057_n0005" class="text-teal-700 font-bold">Hellen: Just one kilogram!</span></p>
-      <p class="block"><span data-id="pg057_n0006" class="text-red-600 font-bold">Juma: One kilogram of onions costs Tshs 2000/=.</span></p>
-      <p class="block"><span data-id="pg057_n0007" class="text-gray-800">One kilogram of maize flour costs Tshs 2000/=.</span></p>
-      <p class="block"><span data-id="pg057_n0008" class="text-teal-700 font-bold">Hellen: Here you are (hands over a ten thousand shillings note).</span></p>
-      <p class="block"><span data-id="pg057_n0009" class="text-gray-800">My change, please?</span></p>
-      <p class="block"><span data-id="pg057_n0010" class="text-red-600 font-bold">Juma: Here you are (hands back a change).</span></p>
-      <p class="block"><span data-id="pg057_n0011" class="text-gray-800">Thank you for shopping with me!</span></p>
-      <p class="block"><span data-id="pg057_n0012" class="text-gray-800">Welcome again.</span></p>
-      <p class="block"><span data-id="pg057_n0013" class="text-teal-700 font-bold">Hellen: Thank you very much.</span></p>
+<section data-section-type="activity_open_ended_answer" data-section-id="pg057_sec001" class="max-w-4xl mx-auto bg-white px-10 py-8 text-left text-gray-800 max-lg:px-8 max-sm:px-4 max-sm:py-6" aria-label="Questions" role="activity">
+    <div id="market-dialogue" class="space-y-1 text-[1.05rem] leading-relaxed max-lg:text-base max-sm:text-sm">
+      <p class="block"><span data-id="pg057_n0002" class="sr-only">Juma: Alright, anything else?</span><span class="book-dialogue-line" data-speaker="Juma" aria-hidden="true"><strong>Juma:</strong><span>Alright, anything else?</span></span></p>
+      <p class="block"><span data-id="pg057_n0003" class="sr-only">Hellen: I would also like to buy some maize flour!</span><span class="book-dialogue-line" data-speaker="Hellen" aria-hidden="true"><strong>Hellen:</strong><span>I would also like to buy some maize flour!</span></span></p>
+      <p class="block"><span data-id="pg057_n0004" class="sr-only">Juma: We have it, how many kilograms?</span><span class="book-dialogue-line" data-speaker="Juma" aria-hidden="true"><strong>Juma:</strong><span>We have it, how many kilograms?</span></span></p>
+      <p class="block"><span data-id="pg057_n0005" class="sr-only">Hellen: Just one kilogram!</span><span class="book-dialogue-line" data-speaker="Hellen" aria-hidden="true"><strong>Hellen:</strong><span>Just one kilogram!</span></span></p>
+      <p class="block"><span data-id="pg057_n0006" class="sr-only">Juma: One kilogram of onions costs Tshs 2000/=.</span><span class="book-dialogue-line" data-speaker="Juma" aria-hidden="true"><strong>Juma:</strong><span>One kilogram of onions costs Tshs 2000/=.</span></span></p>
+      <p class="block"><span data-id="pg057_n0007" class="sr-only">One kilogram of maize flour costs Tshs 2000/=.</span><span class="book-dialogue-line" aria-hidden="true"><strong></strong><span>One kilogram of maize flour costs Tshs 2000/=.</span></span></p>
+      <p class="block"><span data-id="pg057_n0008" class="sr-only">Hellen: Here you are (hands over a ten thousand shillings note).</span><span class="book-dialogue-line" data-speaker="Hellen" aria-hidden="true"><strong>Hellen:</strong><span>Here you are <em>(hands over a ten thousand shillings note)</em>.</span></span></p>
+      <p class="block"><span data-id="pg057_n0009" class="sr-only">My change, please?</span><span class="book-dialogue-line" aria-hidden="true"><strong></strong><span>My change, please?</span></span></p>
+      <p class="block"><span data-id="pg057_n0010" class="sr-only">Juma: Here you are (hands back a change).</span><span class="book-dialogue-line" data-speaker="Juma" aria-hidden="true"><strong>Juma:</strong><span>Here you are <em>(hands back a change)</em>.</span></span></p>
+      <p class="block"><span data-id="pg057_n0011" class="sr-only">Thank you for shopping with me!</span><span class="book-dialogue-line" aria-hidden="true"><strong></strong><span>Thank you for shopping with me!</span></span></p>
+      <p class="block"><span data-id="pg057_n0012" class="sr-only">Welcome again.</span><span class="book-dialogue-line" aria-hidden="true"><strong></strong><span>Welcome again.</span></span></p>
+      <p class="block"><span data-id="pg057_n0013" class="sr-only">Hellen: Thank you very much.</span><span class="book-dialogue-line" data-speaker="Hellen" aria-hidden="true"><strong>Hellen:</strong><span>Thank you very much.</span></span></p>
     </div>
 
     <div class="mt-8">
       <h1 data-id="pg057_n0015" class="text-3xl font-extrabold text-gray-900 max-lg:text-2xl max-sm:text-xl">Questions</h1>
       <ul class="mt-4 space-y-2 pl-4 text-[1.05rem] leading-relaxed max-lg:text-base max-sm:text-sm">
-        <li><span data-id="pg057_n0018" class="text-gray-800">1. Why did Hellen go to the market?</span><textarea class="mt-2 w-full rounded border border-slate-400 bg-white px-3 py-2 min-h-24 resize-y" data-aria-id="aria-1-0-0" aria-label="Answer to question 1" tabindex="0"></textarea></li>
-        <li><span data-id="pg057_n0020" class="text-gray-800">2. How many kilogram of maize flour did Hellen buy?</span><textarea class="mt-2 w-full rounded border border-slate-400 bg-white px-3 py-2 min-h-24 resize-y" data-aria-id="aria-1-0-1" aria-label="Answer to question 2" tabindex="0"></textarea></li>
-        <li><span data-id="pg057_n0022" class="text-gray-800">3. How much does a kilogram of onions cost?</span><textarea class="mt-2 w-full rounded border border-slate-400 bg-white px-3 py-2 min-h-24 resize-y" data-aria-id="aria-1-0-2" aria-label="Answer to question 3" tabindex="0"></textarea></li>
-        <li><span data-id="pg057_n0024" class="text-gray-800">4. How much is a kilogram of maize flour?</span><textarea class="mt-2 w-full rounded border border-slate-400 bg-white px-3 py-2 min-h-24 resize-y" data-aria-id="aria-1-0-3" aria-label="Answer to question 4" tabindex="0"></textarea></li>
+        <li><span data-id="pg057_n0018" class="text-gray-800">1. Why did Hellen go to the market?</span><span class="sr-only" data-adt-blank-audio="true" data-id="pg057_sec001_blank_001">blank</span><textarea class="mt-2 w-full rounded border border-slate-400 bg-white px-3 py-2 min-h-24 resize-y" data-aria-id="aria-1-0-0" aria-label="Answer to question 1" tabindex="0"></textarea></li>
+        <li><span data-id="pg057_n0020" class="text-gray-800">2. How many kilogram of maize flour did Hellen buy?</span><span class="sr-only" data-adt-blank-audio="true" data-id="pg057_sec001_blank_002">blank</span><textarea class="mt-2 w-full rounded border border-slate-400 bg-white px-3 py-2 min-h-24 resize-y" data-aria-id="aria-1-0-1" aria-label="Answer to question 2" tabindex="0"></textarea></li>
+        <li><span data-id="pg057_n0022" class="text-gray-800">3. How much does a kilogram of onions cost?</span><span class="sr-only" data-adt-blank-audio="true" data-id="pg057_sec001_blank_003">blank</span><textarea class="mt-2 w-full rounded border border-slate-400 bg-white px-3 py-2 min-h-24 resize-y" data-aria-id="aria-1-0-2" aria-label="Answer to question 3" tabindex="0"></textarea></li>
+        <li><span data-id="pg057_n0024" class="text-gray-800">4. How much is a kilogram of maize flour?</span><span class="sr-only" data-adt-blank-audio="true" data-id="pg057_sec001_blank_004">blank</span><textarea class="mt-2 w-full rounded border border-slate-400 bg-white px-3 py-2 min-h-24 resize-y" data-aria-id="aria-1-0-3" aria-label="Answer to question 4" tabindex="0"></textarea></li>
       </ul>
     </div>
   </section>
 
 <section data-section-type="boxed_text" data-section-id="pg057_sec002" class="mx-auto max-w-5xl overflow-hidden rounded-[2.25rem] bg-white shadow-xl ring-4 ring-teal-200" aria-label="Activity 6.5: Taking part in conversations at a railway station" role="article">
-  <div class="relative h-24 overflow-hidden bg-[#f7d2c5] max-lg:h-20 max-sm:h-16">
-    <img data-id="pg057_im027" src="images/pg057_im027.png" alt="Activity 6.5, &#x201c;Taking part in conversations at a railway station,&#x201d; with an instruction to act out a dialogue between Iku and Atu. The dialogue begins: Iku says, &#x201c;Hi, I&#x2019;m Iku.&#x201d; Atu says, &#x201c;Hi, I&#x2019;m Atu.&#x201d; Iku asks, &#x201c;Where are you going?&#x201d; Atu says he is going to Kigoma with his parents. Iku says he is going to Dodoma and will alight at Dodoma Railway Station, then asks if Atu will alight at Kigoma station. Atu replies that they will get out at Nguruka station, and Iku asks what time they will arrive there." class="h-full max-w-full object-cover object-top opacity-30" style="max-width: 100%; height: auto;">
-    <div class="absolute inset-0 bg-[#efb9a6]/75"></div>
-  </div>
-
-  <div class="relative z-10 -mt-8 px-8 pb-10 max-lg:-mt-7 max-lg:px-6 max-sm:-mt-5 max-sm:px-4 max-sm:pb-7">
+  <div class="relative z-10 px-8 py-8 max-lg:px-6 max-lg:py-7 max-sm:px-4 max-sm:py-5">
     <div class="overflow-hidden rounded-[1.75rem] bg-[#efb9a6] shadow-md">
       <div class="px-3 pt-3 max-sm:px-2 max-sm:pt-2">
         <div class="inline-block rounded-[1rem] bg-red-600 px-5 py-3 text-white shadow-md max-sm:px-4 max-sm:py-2.5">
@@ -63,9 +101,9 @@
       </div>
 
       <div class="mt-3 rounded-t-[1.75rem] bg-white px-9 py-7 shadow-[0_-1px_0_rgba(0,0,0,0.04)] max-lg:px-7 max-lg:py-6 max-sm:px-5 max-sm:py-5">
-        <p data-id="pg057_n0030" class="mb-5 text-[1.05rem] italic leading-snug text-teal-700 max-lg:text-[1rem] max-sm:text-[0.95rem]">(a) Act out the following conversation between Iku and Atu who met at a railway station.</p>
+        <p data-id="pg057_n0030" class="mb-5 text-2xl italic leading-relaxed text-teal-700 max-lg:text-xl max-sm:text-lg">(a) Act out the following conversation between Iku and Atu who met at a railway station.</p>
 
-        <div class="space-y-2.5 text-[1rem] leading-[1.35] text-zinc-800 max-lg:text-[0.98rem] max-sm:text-[0.95rem]">
+        <div class="space-y-3 text-2xl leading-snug text-zinc-800 max-lg:text-xl max-sm:text-lg">
           <p data-id="pg057_n0031" class="font-medium text-teal-700">Iku: Hi, I&#x2019;m Iku.</p>
           <p data-id="pg057_n0032" class="font-medium text-red-600">Atu: Hi, I&#x2019;m Atu.</p>
           <p data-id="pg057_n0033" class="font-medium text-teal-700">Iku: Where are you going?</p>
@@ -76,6 +114,10 @@
           <p data-id="pg057_n0038" class="font-medium text-red-600">Atu: Oh, no.</p>
           <p data-id="pg057_n0039" class="font-medium">We get out at Nguruka station.</p>
           <p data-id="pg057_n0040" class="font-medium text-teal-700">Iku: What time do you arrive at Nguruka station?</p>
+          <p data-id="pg058_n0002" class="font-medium text-red-600">Atu: It will be tomorrow at aroud 11:00.</p>
+          <p data-id="pg058_n0003" class="font-medium text-teal-700">Iku: Oh, it&#x2019;s time to get on the train. It will depart soon.</p>
+          <p data-id="pg058_n0004" class="font-medium text-red-600">Atu: Ok. Have a safe journey.</p>
+          <p data-id="pg058_n0005" class="font-medium text-teal-700">Iku: You too. Bye.</p>
         </div>
       </div>
     </div>
@@ -86,9 +128,10 @@
 
     <div class="relative z-50" id="interface-container"></div>
     <div class="relative z-50" id="nav-container"></div>
-    <script src="./assets/offline-preloader.js?v=dad24bd56e22"></script>
+    <script src="./assets/offline-preloader.js?v=13d5b16a9d59"></script>
     <script src="./assets/scorm.js"></script>
     <script src="./assets/base.bundle.local.js"></script>
+    <script src="./assets/conversation-labels.js"></script>
 </body>
 
 </html>

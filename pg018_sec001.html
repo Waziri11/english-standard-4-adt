@@ -10,6 +10,7 @@
     <link href="./content/tailwind_output.css" rel="stylesheet">
     <link href="./assets/libs/fontawesome/css/all.min.css" rel="stylesheet">
     <link href="./assets/fonts.css" rel="stylesheet">
+    <link href="./content/think-title.css" rel="stylesheet">
     <link href="./assets/unit-openers.css?v=1" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,11 +43,9 @@
       </p>
     </div>
 
-    <div class="mb-6 flex items-center overflow-hidden rounded-r-sm bg-lime-500 shadow-[6px_6px_0_rgba(0,0,0,0.2)]">
-      <img src="images/think-cartoon.png" alt="" aria-hidden="true" style="height:112px;width:112px" class="h-28 w-28 shrink-0 rounded-full object-cover max-sm:h-20 max-sm:w-20">
-      <div class="px-8 py-5 max-lg:px-6 max-sm:px-4 max-sm:py-3">
-        <p data-id="pg018_n0013" class="text-left text-[28px] leading-[1.25] text-zinc-900 max-lg:text-[23px] max-sm:text-[16px]">Think about the words you use to talk about amount of things</p>
-      </div>
+    <div class="think-title" role="group" aria-label="Think prompt">
+      <img src="images/think-cartoon.png" alt="" aria-hidden="true" class="think-title__character">
+      <div class="think-title__arrow"><span data-id="pg018_n0013" class="think-title__text">Think about the words you use to talk about amount of things</span></div>
     </div>
 
     <div class="mb-5 overflow-hidden rounded-[1.8rem] bg-[#efb8a2]">
@@ -81,7 +80,7 @@
 
     <div class="relative z-50" id="interface-container"></div>
     <div class="relative z-50" id="nav-container"></div>
-    <script src="./assets/offline-preloader.js?v=dad24bd56e22"></script>
+    <script src="./assets/offline-preloader.js?v=13d5b16a9d59"></script>
     <script src="./assets/scorm.js"></script>
     <script src="./assets/base.bundle.local.js"></script>
 </body>

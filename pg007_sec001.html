@@ -10,6 +10,7 @@
     <link href="./content/tailwind_output.css" rel="stylesheet">
     <link href="./assets/libs/fontawesome/css/all.min.css" rel="stylesheet">
     <link href="./assets/fonts.css" rel="stylesheet">
+    <link href="./content/think-title.css" rel="stylesheet">
     <link href="./assets/unit-openers.css?v=1" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,14 +42,9 @@
       </div>
     </div>
 
-    <div class="mb-8 flex items-center gap-0 max-sm:flex-col max-sm:items-start max-sm:gap-3">
-      <div class="relative z-10 shrink-0 rounded-full border-[6px] border-l-green-700 border-r-yellow-200 border-t-lime-500 border-b-lime-700 bg-white shadow-lg" style="width:96px;height:96px;overflow:hidden">
-        <img data-id="pg007_im037" src="images/pg007_im037.jpg" alt="Simple line drawing of a thoughtful person with one hand raised to the chin." class="rounded-full object-contain" style="display:block;width:100%;height:100%;object-fit:contain;padding:5px">
-      </div>
-      <div class="relative flex-1 max-sm:w-full">
-        <img data-id="pg007_im058" src="images/pg007_im058.png" alt="Think about the words you know and how you use them in communication." class="block h-auto max-w-full max-sm:w-full" style="max-width: 100%; height: auto;">
-        
-      </div>
+    <div class="think-title" role="group" aria-label="Think prompt">
+      <img src="images/think-cartoon.png" alt="" aria-hidden="true" class="think-title__character">
+      <div class="think-title__arrow"><span data-id="pg007_im058" class="think-title__text">Think about the words you know and how you use them in communication.</span></div>
     </div>
 
     <div class="relative max-w-[980px] overflow-hidden rounded-[28px] bg-[#f3c1ae] shadow-sm">
@@ -102,7 +98,7 @@
 
     <div class="relative z-50" id="interface-container"></div>
     <div class="relative z-50" id="nav-container"></div>
-    <script src="./assets/offline-preloader.js?v=dad24bd56e22"></script>
+    <script src="./assets/offline-preloader.js?v=13d5b16a9d59"></script>
     <script src="./assets/scorm.js"></script>
     <script src="./assets/base.bundle.local.js"></script>
 </body>
