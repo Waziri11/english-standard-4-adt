@@ -88,7 +88,18 @@ def split_voices(value: str) -> list[tuple[str, str]]:
         position = match.end()
     if position < len(spoken):
         segments.append((ENGLISH_VOICE, spoken[position:]))
-    return [(voice, text) for voice, text in segments if text]
+    cleaned: list[tuple[str, str]] = []
+    for voice, text in segments:
+        if not text:
+            continue
+        # Keep terminal punctuation with the preceding spoken segment. Sending
+        # punctuation by itself to the TTS service produces no audio.
+        if cleaned and not re.search(r"[A-Za-z0-9]", text):
+            previous_voice, previous_text = cleaned[-1]
+            cleaned[-1] = (previous_voice, previous_text + text)
+        else:
+            cleaned.append((voice, text))
+    return cleaned
 
 
 def affected_items(texts: dict[str, str], audios: dict[str, str]) -> list[tuple[str, str, str]]:
