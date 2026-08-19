@@ -114,7 +114,10 @@ async def synthesize_segment(edge_tts, voice: str, text: str, output: Path) -> N
     last_error: Exception | None = None
     for attempt in range(4):
         try:
-            await edge_tts.Communicate(text, voice, rate="-4%").save(str(output))
+            await asyncio.wait_for(
+                edge_tts.Communicate(text, voice, rate="-4%").save(str(output)),
+                timeout=45,
+            )
             return
         except Exception as error:  # network-dependent retry
             last_error = error

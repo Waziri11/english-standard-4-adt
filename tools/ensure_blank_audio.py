@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import hashlib
 import html
 import json
 import re
@@ -18,6 +19,8 @@ import shutil
 import sys
 import tempfile
 from pathlib import Path
+
+from rebuild_mixed_voice_audio import rebuild_one
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -52,7 +55,7 @@ def save_json(path: Path, value: dict[str, str]) -> None:
     )
 
 
-def add_literal_tokens(*, write: bool) -> tuple[list[str], int]:
+def add_literal_tokens(*, write: bool, section_ids: set[str]) -> tuple[list[str], int]:
     token_ids: list[str] = []
     field_count = 0
     for path in sorted(ROOT.glob("*.html")):
@@ -61,6 +64,8 @@ def add_literal_tokens(*, write: bool) -> tuple[list[str], int]:
         if not title_match:
             continue
         section_id = title_match.group(1)
+        if section_ids and section_id not in section_ids:
+            continue
         next_number = 1
         for match in re.finditer(
             rf'data-id="{re.escape(section_id)}_blank_(\d{{3}})"', source
@@ -102,67 +107,74 @@ def spoken_text(value: str) -> str:
     return re.sub(r"\s+", " ", value).strip()
 
 
-def candidate_existing_ids(texts: dict[str, str], audios: dict[str, str]) -> list[str]:
+def candidate_existing_ids(
+    texts: dict[str, str], audios: dict[str, str], section_ids: set[str]
+) -> list[str]:
+    allowed_ids: set[str] = set()
+    if section_ids:
+        for path in ROOT.glob("*.html"):
+            source = path.read_text(encoding="utf-8")
+            title_match = TITLE_ID_RE.search(source)
+            if title_match and title_match.group(1) in section_ids:
+                ids = set(re.findall(r'data-id="([^"]+)"', source))
+                allowed_ids.update(ids)
+                allowed_ids.update(f"{text_id}_easy_read" for text_id in ids)
     return sorted(
         text_id
         for text_id, value in texts.items()
         if text_id in audios
+        and (not section_ids or text_id in allowed_ids)
         and (BLANK_MARKER_RE.search(value) or PRINTED_BLANK_RE.search(value))
     )
 
 
-async def synthesize(items: list[tuple[str, str]], voice: str, concurrency: int) -> None:
+async def synthesize(items: list[tuple[str, str, str]], concurrency: int) -> None:
     import edge_tts
 
     AUDIO.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="adt-blank-audio-") as temp:
         work = Path(temp)
-        destinations: dict[str, list[str]] = {}
-        for filename, speech in items:
-            destinations.setdefault(speech, []).append(filename.split("?", 1)[0])
         semaphore = asyncio.Semaphore(concurrency)
         completed = 0
 
-        async def render(index: int, speech: str, filenames: list[str]) -> None:
+        async def render(text_id: str, speech: str, filename: str) -> None:
             nonlocal completed
-            output = work / f"{index:05d}.mp3"
-            async with semaphore:
-                last_error: Exception | None = None
-                for attempt in range(4):
-                    try:
-                        await edge_tts.Communicate(speech, voice, rate="-4%").save(str(output))
-                        break
-                    except Exception as error:
-                        last_error = error
-                        output.unlink(missing_ok=True)
-                        await asyncio.sleep(1.5 * (attempt + 1))
-                else:
-                    raise RuntimeError(f"TTS failed for {speech!r}: {last_error}")
-            for filename in filenames:
-                shutil.copyfile(output, AUDIO / filename)
-            completed += len(filenames)
-            if completed % 50 < len(filenames) or completed == len(items):
+            clean_filename = filename.split("?", 1)[0]
+            await rebuild_one(
+                edge_tts, text_id, speech, clean_filename, work, semaphore
+            )
+            completed += 1
+            if completed % 25 == 0 or completed == len(items):
                 print(f"Generated {completed}/{len(items)} audio files", flush=True)
 
-        await asyncio.gather(*(
-            render(index, speech, filenames)
-            for index, (speech, filenames) in enumerate(destinations.items(), 1)
-        ))
+        await asyncio.gather(*(render(*item) for item in items))
+
+
+def refresh_audio_versions(audios: dict[str, str], text_ids: list[str]) -> None:
+    for text_id in text_ids:
+        filename = audios[text_id].split("?", 1)[0]
+        digest = hashlib.sha256((AUDIO / filename).read_bytes()).hexdigest()[:12]
+        audios[text_id] = f"{filename}?v={digest}"
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--apply", action="store_true")
-    parser.add_argument("--voice", default="en-TZ-ImaniNeural")
     parser.add_argument("--concurrency", type=int, default=6)
+    parser.add_argument(
+        "--sections",
+        default="",
+        help="Comma-separated exact section IDs; omit to process the whole book",
+    )
     args = parser.parse_args()
 
     texts_path = I18N / "texts.json"
     audios_path = I18N / "audios.json"
     texts = load_json(texts_path)
     audios = load_json(audios_path)
-    token_ids, fields = add_literal_tokens(write=args.apply)
-    existing_ids = candidate_existing_ids(texts, audios)
+    section_ids = {value.strip() for value in args.sections.split(",") if value.strip()}
+    token_ids, fields = add_literal_tokens(write=args.apply, section_ids=section_ids)
+    existing_ids = candidate_existing_ids(texts, audios, section_ids)
 
     print(f"Literal text fields/textareas: {fields}")
     print(f"Dedicated blank narration tokens: {len(token_ids)}")
@@ -179,16 +191,16 @@ def main() -> None:
     save_json(texts_path, texts)
     save_json(audios_path, audios)
 
-    items: list[tuple[str, str]] = []
+    items: list[tuple[str, str, str]] = []
     for text_id in token_ids:
-        items.append((audios[text_id], "blank"))
-        items.append((audios[f"{text_id}_easy_read"], "blank"))
+        items.append((text_id, "blank", audios[text_id]))
+        items.append((f"{text_id}_easy_read", "blank", audios[f"{text_id}_easy_read"]))
     for text_id in existing_ids:
-        items.append((audios[text_id], spoken_text(texts[text_id])))
+        items.append((text_id, spoken_text(texts[text_id]), audios[text_id]))
 
-    # A filename should have only one source ID, but de-duplicate defensively.
-    unique = list(dict.fromkeys(items))
-    asyncio.run(synthesize(unique, args.voice, args.concurrency))
+    asyncio.run(synthesize(items, args.concurrency))
+    refresh_audio_versions(audios, [item[0] for item in items])
+    save_json(audios_path, audios)
 
 
 if __name__ == "__main__":
