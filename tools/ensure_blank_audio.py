@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Ensure every ADT blank is explicitly spoken as "blank".
+"""Ensure every ADT blank is explicitly spoken as "dash".
 
 Literal text fields receive a screen-reader-only localized token immediately
 before the field. Inline [[blank:...]] markers and printed placeholder runs
 keep their visible textbook text, but their existing MP3 narration is rebuilt
-with every placeholder spoken as "blank".
+with every placeholder spoken as "dash".
 """
 
 from __future__ import annotations
@@ -37,7 +37,12 @@ FIELD_RE = re.compile(
 )
 EXISTING_TOKEN_RE = re.compile(
     r'<span\s+class="sr-only"\s+data-adt-blank-audio="true"\s+'
-    r'data-id="([^"]+)">blank</span>\s*$',
+    r'data-id="([^"]+)">(?:blank|dash)</span>\s*$',
+    re.IGNORECASE,
+)
+TOKEN_TEXT_RE = re.compile(
+    r'(<span\s+class="sr-only"\s+data-adt-blank-audio="true"\s+'
+    r'data-id="[^"]+">)(?:blank|dash)(</span>\s*)$',
     re.IGNORECASE,
 )
 BLANK_MARKER_RE = re.compile(r"\[\[blank:[^\]]+\]\]")
@@ -81,14 +86,16 @@ def add_literal_tokens(*, write: bool, section_ids: set[str]) -> tuple[list[str]
             existing = EXISTING_TOKEN_RE.search(prefix)
             if existing:
                 token_ids.append(existing.group(1))
-                pieces.extend((prefix, match.group("token")))
+                normalized_prefix = TOKEN_TEXT_RE.sub(r"\1dash\2", prefix)
+                pieces.extend((normalized_prefix, match.group("token")))
+                changed = changed or normalized_prefix != prefix
             else:
                 text_id = f"{section_id}_blank_{next_number:03d}"
                 next_number += 1
                 token_ids.append(text_id)
                 token = (
                     f'<span class="sr-only" data-adt-blank-audio="true" '
-                    f'data-id="{text_id}">blank</span>'
+                    f'data-id="{text_id}">dash</span>'
                 )
                 pieces.extend((prefix, token, match.group("token")))
                 changed = True
@@ -102,8 +109,8 @@ def add_literal_tokens(*, write: bool, section_ids: set[str]) -> tuple[list[str]
 
 def spoken_text(value: str) -> str:
     value = html.unescape(TAG_RE.sub("", value))
-    value = BLANK_MARKER_RE.sub(" blank ", value)
-    value = PRINTED_BLANK_RE.sub(" blank ", value)
+    value = BLANK_MARKER_RE.sub(" dash ", value)
+    value = PRINTED_BLANK_RE.sub(" dash ", value)
     return re.sub(r"\s+", " ", value).strip()
 
 
@@ -184,8 +191,8 @@ def main() -> None:
         return
 
     for text_id in token_ids:
-        texts[text_id] = "blank"
-        texts[f"{text_id}_easy_read"] = "blank"
+        texts[text_id] = "dash"
+        texts[f"{text_id}_easy_read"] = "dash"
         audios[text_id] = f"{text_id}.mp3"
         audios[f"{text_id}_easy_read"] = f"{text_id}_easy_read.mp3"
     save_json(texts_path, texts)
@@ -193,8 +200,8 @@ def main() -> None:
 
     items: list[tuple[str, str, str]] = []
     for text_id in token_ids:
-        items.append((text_id, "blank", audios[text_id]))
-        items.append((f"{text_id}_easy_read", "blank", audios[f"{text_id}_easy_read"]))
+        items.append((text_id, "dash", audios[text_id]))
+        items.append((f"{text_id}_easy_read", "dash", audios[f"{text_id}_easy_read"]))
     for text_id in existing_ids:
         items.append((text_id, spoken_text(texts[text_id]), audios[text_id]))
 
