@@ -19,14 +19,14 @@
       html, body, main { width: 100%; }
       #content {
         width: 100% !important;
-        max-width: 72rem !important;
+        max-width: 82rem !important;
         margin-inline: auto !important;
         box-sizing: border-box;
       }
       section[data-section-id="pg057_sec001"] {
         display: block !important;
-        width: min(100%, 56rem) !important;
-        max-width: 56rem !important;
+        width: min(100%, 78rem) !important;
+        max-width: 78rem !important;
         margin-inline: auto !important;
         box-sizing: border-box;
       }
@@ -37,10 +37,16 @@
         max-width: none !important;
         box-sizing: border-box;
       }
+      #market-dialogue {
+        overflow-x: auto;
+        padding-bottom: 0.25rem;
+      }
       #market-dialogue .book-dialogue-line {
         display: grid;
         grid-template-columns: 5.25rem minmax(0, 1fr);
         column-gap: 0.9rem;
+        min-width: max-content;
+        white-space: nowrap;
         color: #27272a;
         font-weight: 400;
         font-size: 1.25rem;
@@ -70,13 +76,9 @@
       <p class="block"><span data-id="pg057_n0003" class="sr-only">Hellen: I would also like to buy some maize flour!</span><span class="book-dialogue-line" data-speaker="Hellen" aria-hidden="true"><strong>Hellen:</strong><span>I would also like to buy some maize flour!</span></span></p>
       <p class="block"><span data-id="pg057_n0004" class="sr-only">Juma: We have it, how many kilograms?</span><span class="book-dialogue-line" data-speaker="Juma" aria-hidden="true"><strong>Juma:</strong><span>We have it, how many kilograms?</span></span></p>
       <p class="block"><span data-id="pg057_n0005" class="sr-only">Hellen: Just one kilogram!</span><span class="book-dialogue-line" data-speaker="Hellen" aria-hidden="true"><strong>Hellen:</strong><span>Just one kilogram!</span></span></p>
-      <p class="block"><span data-id="pg057_n0006" class="sr-only">Juma: One kilogram of onions costs Tshs 2000/=.</span><span class="book-dialogue-line" data-speaker="Juma" aria-hidden="true"><strong>Juma:</strong><span>One kilogram of onions costs Tshs 2000/=.</span></span></p>
-      <p class="block"><span data-id="pg057_n0007" class="sr-only">One kilogram of maize flour costs Tshs 2000/=.</span><span class="book-dialogue-line" aria-hidden="true"><strong></strong><span>One kilogram of maize flour costs Tshs 2000/=.</span></span></p>
-      <p class="block"><span data-id="pg057_n0008" class="sr-only">Hellen: Here you are (hands over a ten thousand shillings note).</span><span class="book-dialogue-line" data-speaker="Hellen" aria-hidden="true"><strong>Hellen:</strong><span>Here you are <em>(hands over a ten thousand shillings note)</em>.</span></span></p>
-      <p class="block"><span data-id="pg057_n0009" class="sr-only">My change, please?</span><span class="book-dialogue-line" aria-hidden="true"><strong></strong><span>My change, please?</span></span></p>
-      <p class="block"><span data-id="pg057_n0010" class="sr-only">Juma: Here you are (hands back a change).</span><span class="book-dialogue-line" data-speaker="Juma" aria-hidden="true"><strong>Juma:</strong><span>Here you are <em>(hands back a change)</em>.</span></span></p>
-      <p class="block"><span data-id="pg057_n0011" class="sr-only">Thank you for shopping with me!</span><span class="book-dialogue-line" aria-hidden="true"><strong></strong><span>Thank you for shopping with me!</span></span></p>
-      <p class="block"><span data-id="pg057_n0012" class="sr-only">Welcome again.</span><span class="book-dialogue-line" aria-hidden="true"><strong></strong><span>Welcome again.</span></span></p>
+      <p class="block"><span data-id="pg057_n0006" class="sr-only">Juma: One kilogram of onions costs Tshs 2000/=.</span><span data-id="pg057_n0007" class="sr-only">One kilogram of maize flour costs Tshs 2000/=.</span><span class="book-dialogue-line" data-speaker="Juma" aria-hidden="true"><strong>Juma:</strong><span>One kilogram of onions costs Tshs 2000/=. One kilogram of maize flour costs Tshs 2000/=.</span></span></p>
+      <p class="block"><span data-id="pg057_n0008" class="sr-only">Hellen: Here you are (hands over a ten thousand shillings note).</span><span data-id="pg057_n0009" class="sr-only">My change, please?</span><span class="book-dialogue-line" data-speaker="Hellen" aria-hidden="true"><strong>Hellen:</strong><span>Here you are <em>(hands over a ten thousand shillings note)</em>. My change, please?</span></span></p>
+      <p class="block"><span data-id="pg057_n0010" class="sr-only">Juma: Here you are (hands back a change).</span><span data-id="pg057_n0011" class="sr-only">Thank you for shopping with me!</span><span data-id="pg057_n0012" class="sr-only">Welcome again.</span><span class="book-dialogue-line" data-speaker="Juma" aria-hidden="true"><strong>Juma:</strong><span>Here you are <em>(hands back a change)</em>. Thank you for shopping with me! Welcome again.</span></span></p>
       <p class="block"><span data-id="pg057_n0013" class="sr-only">Hellen: Thank you very much.</span><span class="book-dialogue-line" data-speaker="Hellen" aria-hidden="true"><strong>Hellen:</strong><span>Thank you very much.</span></span></p>
     </div>
 
@@ -128,7 +130,7 @@
 
     <div class="relative z-50" id="interface-container"></div>
     <div class="relative z-50" id="nav-container"></div>
-    <script src="./assets/offline-preloader.js?v=525268aeecd3"></script>
+    <script src="./assets/offline-preloader.js?v=07ca55cca499"></script>
     <script src="./assets/scorm.js"></script>
     <script src="./assets/base.bundle.local.js"></script>
     <script src="./assets/conversation-labels.js"></script>
