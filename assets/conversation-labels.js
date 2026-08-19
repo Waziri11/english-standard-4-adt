@@ -15,19 +15,21 @@
     style.id = "conversation-inline-styles";
     style.textContent = `
       .conversation-scroll {
-        overflow-x: auto !important;
+        overflow-x: visible !important;
         overflow-y: visible;
       }
       .conversation-turn {
-        display: inline-flex !important;
+        display: flex !important;
         align-items: baseline;
         gap: 0.5rem;
-        min-width: max-content;
-        max-width: none !important;
-        white-space: nowrap !important;
+        width: 100% !important;
+        min-width: 0;
+        max-width: 100% !important;
+        white-space: normal !important;
       }
       .conversation-turn > * {
-        white-space: nowrap !important;
+        min-width: 0;
+        white-space: normal !important;
       }
       .conversation-speaker {
         flex: none;
