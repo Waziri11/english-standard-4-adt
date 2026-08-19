@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Ensure every ADT blank is explicitly spoken as "dash".
+"""Speak "dash" only for placeholders embedded within readable sentences.
 
-Literal text fields receive a screen-reader-only localized token immediately
-before the field. Inline [[blank:...]] markers and printed placeholder runs
-keep their visible textbook text, but their existing MP3 narration is rebuilt
-with every placeholder spoken as "dash".
+Standalone text fields remain silent. Inline ``[[blank:...]]`` markers and
+printed placeholder runs keep their visible textbook text. Their narration is
+rebuilt so a placeholder is spoken as "dash" only when readable text occurs
+on both sides of it.
 """
 
 from __future__ import annotations
@@ -31,18 +31,9 @@ if VENDOR.exists():
     sys.path.insert(0, str(VENDOR))
 
 TITLE_ID_RE = re.compile(r'<meta\s+name="title-id"\s+content="([^"]+)"')
-FIELD_RE = re.compile(
-    r'(?P<token><input\b(?=[^>]*\btype=["\']text["\'])[^>]*>|<textarea\b[^>]*>)',
-    re.IGNORECASE,
-)
-EXISTING_TOKEN_RE = re.compile(
+LITERAL_TOKEN_RE = re.compile(
     r'<span\s+class="sr-only"\s+data-adt-blank-audio="true"\s+'
-    r'data-id="([^"]+)">(?:blank|dash)</span>\s*$',
-    re.IGNORECASE,
-)
-TOKEN_TEXT_RE = re.compile(
-    r'(<span\s+class="sr-only"\s+data-adt-blank-audio="true"\s+'
-    r'data-id="[^"]+">)(?:blank|dash)(</span>\s*)$',
+    r'data-id="([^"]+)">(?:blank|dash)</span>',
     re.IGNORECASE,
 )
 BLANK_MARKER_RE = re.compile(r"\[\[blank:[^\]]+\]\]")
@@ -60,9 +51,8 @@ def save_json(path: Path, value: dict[str, str]) -> None:
     )
 
 
-def add_literal_tokens(*, write: bool, section_ids: set[str]) -> tuple[list[str], int]:
+def remove_literal_tokens(*, write: bool, section_ids: set[str]) -> list[str]:
     token_ids: list[str] = []
-    field_count = 0
     for path in sorted(ROOT.glob("*.html")):
         source = path.read_text(encoding="utf-8")
         title_match = TITLE_ID_RE.search(source)
@@ -71,46 +61,31 @@ def add_literal_tokens(*, write: bool, section_ids: set[str]) -> tuple[list[str]
         section_id = title_match.group(1)
         if section_ids and section_id not in section_ids:
             continue
-        next_number = 1
-        for match in re.finditer(
-            rf'data-id="{re.escape(section_id)}_blank_(\d{{3}})"', source
-        ):
-            next_number = max(next_number, int(match.group(1)) + 1)
+        token_ids.extend(LITERAL_TOKEN_RE.findall(source))
+        cleaned = LITERAL_TOKEN_RE.sub("", source)
+        if write and cleaned != source:
+            path.write_text(cleaned, encoding="utf-8")
+    return token_ids
 
-        pieces: list[str] = []
-        position = 0
-        changed = False
-        for match in FIELD_RE.finditer(source):
-            field_count += 1
-            prefix = source[position : match.start()]
-            existing = EXISTING_TOKEN_RE.search(prefix)
-            if existing:
-                token_ids.append(existing.group(1))
-                normalized_prefix = TOKEN_TEXT_RE.sub(r"\1dash\2", prefix)
-                pieces.extend((normalized_prefix, match.group("token")))
-                changed = changed or normalized_prefix != prefix
-            else:
-                text_id = f"{section_id}_blank_{next_number:03d}"
-                next_number += 1
-                token_ids.append(text_id)
-                token = (
-                    f'<span class="sr-only" data-adt-blank-audio="true" '
-                    f'data-id="{text_id}">dash</span>'
-                )
-                pieces.extend((prefix, token, match.group("token")))
-                changed = True
-            position = match.end()
-        if changed:
-            pieces.append(source[position:])
-            if write:
-                path.write_text("".join(pieces), encoding="utf-8")
-    return token_ids, field_count
+
+def replace_mid_sentence_placeholders(value: str, pattern: re.Pattern[str]) -> str:
+    """Replace placeholders with 'dash' only when words occur on both sides."""
+    pieces: list[str] = []
+    position = 0
+    for match in pattern.finditer(value):
+        pieces.append(value[position : match.start()])
+        left = value[: match.start()]
+        right = value[match.end() :]
+        pieces.append(" dash " if re.search(r"[A-Za-z0-9]", left) and re.search(r"[A-Za-z0-9]", right) else " ")
+        position = match.end()
+    pieces.append(value[position:])
+    return "".join(pieces)
 
 
 def spoken_text(value: str) -> str:
     value = html.unescape(TAG_RE.sub("", value))
-    value = BLANK_MARKER_RE.sub(" dash ", value)
-    value = PRINTED_BLANK_RE.sub(" dash ", value)
+    value = replace_mid_sentence_placeholders(value, BLANK_MARKER_RE)
+    value = replace_mid_sentence_placeholders(value, PRINTED_BLANK_RE)
     return re.sub(r"\s+", " ", value).strip()
 
 
@@ -180,30 +155,33 @@ def main() -> None:
     texts = load_json(texts_path)
     audios = load_json(audios_path)
     section_ids = {value.strip() for value in args.sections.split(",") if value.strip()}
-    token_ids, fields = add_literal_tokens(write=args.apply, section_ids=section_ids)
+    token_ids = remove_literal_tokens(write=args.apply, section_ids=section_ids)
     existing_ids = candidate_existing_ids(texts, audios, section_ids)
 
-    print(f"Literal text fields/textareas: {fields}")
-    print(f"Dedicated blank narration tokens: {len(token_ids)}")
+    print(f"Standalone field narration tokens to remove: {len(token_ids)}")
     print(f"Inline or printed blank narration IDs: {len(existing_ids)}")
 
     if not args.apply:
         return
 
     for text_id in token_ids:
-        texts[text_id] = "dash"
-        texts[f"{text_id}_easy_read"] = "dash"
-        audios[text_id] = f"{text_id}.mp3"
-        audios[f"{text_id}_easy_read"] = f"{text_id}_easy_read.mp3"
+        for dedicated_id in (text_id, f"{text_id}_easy_read"):
+            mapping = audios.pop(dedicated_id, "").split("?", 1)[0]
+            texts.pop(dedicated_id, None)
+            if mapping:
+                (AUDIO / mapping).unlink(missing_ok=True)
+    items: list[tuple[str, str, str]] = []
+    for text_id in existing_ids:
+        speech = spoken_text(texts[text_id])
+        if speech:
+            items.append((text_id, speech, audios[text_id]))
+        else:
+            mapping = audios.pop(text_id, "").split("?", 1)[0]
+            if mapping:
+                (AUDIO / mapping).unlink(missing_ok=True)
+
     save_json(texts_path, texts)
     save_json(audios_path, audios)
-
-    items: list[tuple[str, str, str]] = []
-    for text_id in token_ids:
-        items.append((text_id, "dash", audios[text_id]))
-        items.append((f"{text_id}_easy_read", "dash", audios[f"{text_id}_easy_read"]))
-    for text_id in existing_ids:
-        items.append((text_id, spoken_text(texts[text_id]), audios[text_id]))
 
     asyncio.run(synthesize(items, args.concurrency))
     refresh_audio_versions(audios, [item[0] for item in items])
