@@ -7,6 +7,7 @@ import argparse
 import asyncio
 import hashlib
 import json
+import re
 import sys
 import tempfile
 from pathlib import Path
@@ -45,12 +46,63 @@ BASE_IDS = {
     "pg091_n0002",
 }
 
+REMAINING_IDS = {
+    "pg050_n0019",
+    "pg050_n0021",
+    "pg052_n0031",
+    "pg052_n0033",
+    "pg052_n0035",
+    "pg052_n0040",
+    "pg052_n0042",
+    "pg052_n0044",
+    "pg053_n0007",
+    "pg053_n0012",
+    "pg053_n0013",
+    "pg053_n0017",
+    "pg053_n0024",
+    "pg053_n0028",
+    "pg053_n0032",
+    "pg058_n0018",
+    "pg058_n0020",
+    "pg058_n0022",
+    "pg058_n0026",
+    "pg058_n0027",
+    "pg058_n0028",
+    "pg058_n0029",
+    "pg058_n0030",
+    "pg058_n0031",
+    "pg059_n0006",
+    "pg059_n0008",
+    "pg059_n0010",
+    "pg059_n0016",
+    "pg059_n0018",
+    "pg059_n0024",
+    "pg059_n0026",
+    "pg059_n0028",
+    "pg059_n0038",
+    "pg071_n0016",
+    "pg077_im056",
+    "pg088_n0010",
+    "pg088_n0016",
+    "pg088_n0022",
+}
+
+BLANK_IDS = REMAINING_IDS - {
+    "pg050_n0019",
+    "pg050_n0021",
+    "pg071_n0016",
+    "pg077_im056",
+}
+
 
 def spoken_text(text_id: str, visible: str) -> str:
     if text_id.startswith("pg006_n0004"):
         return visible.replace("Standards III–VI", "Standards Three to Six")
     if text_id.startswith("pg006_n0005"):
         return visible.replace("Standard IV", "Standard Four")
+    if text_id.removesuffix("_easy_read") in BLANK_IDS:
+        spoken = re.sub(r"(?:…|\.{3}|_{3,})", ", blank, ", visible)
+        return re.sub(r"\s+", " ", spoken).strip()
     return visible
 
 
@@ -79,6 +131,11 @@ async def generate(items: list[tuple[str, str, str]], concurrency: int) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--concurrency", type=int, default=4)
+    parser.add_argument(
+        "--remaining-only",
+        action="store_true",
+        help="Regenerate only audio changed by the remaining correction rows.",
+    )
     args = parser.parse_args()
 
     texts_path = I18N / "texts.json"
@@ -86,7 +143,8 @@ def main() -> None:
     texts = json.loads(texts_path.read_text(encoding="utf-8"))
     audios = json.loads(audios_path.read_text(encoding="utf-8"))
 
-    ids = sorted(BASE_IDS | {f"{text_id}_easy_read" for text_id in BASE_IDS})
+    selected = REMAINING_IDS if args.remaining_only else BASE_IDS | REMAINING_IDS
+    ids = sorted(selected | {f"{text_id}_easy_read" for text_id in selected})
     missing = [text_id for text_id in ids if text_id not in texts or text_id not in audios]
     if missing:
         raise KeyError("Missing text/audio mappings: " + ", ".join(missing))
