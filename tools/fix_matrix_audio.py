@@ -94,13 +94,23 @@ BLANK_IDS = REMAINING_IDS - {
     "pg077_im056",
 }
 
+DASH_IDS = {
+    "pg088_n0010",
+    "pg088_n0016",
+    "pg088_n0022",
+}
+
 
 def spoken_text(text_id: str, visible: str) -> str:
     if text_id.startswith("pg006_n0004"):
         return visible.replace("Standards III–VI", "Standards Three to Six")
     if text_id.startswith("pg006_n0005"):
         return visible.replace("Standard IV", "Standard Four")
-    if text_id.removesuffix("_easy_read") in BLANK_IDS:
+    base_id = text_id.removesuffix("_easy_read")
+    if base_id in DASH_IDS:
+        spoken = re.sub(r"(?:…|\.{3}|_{3,})", ", dash, ", visible)
+        return re.sub(r"\s+", " ", spoken).strip()
+    if base_id in BLANK_IDS:
         spoken = re.sub(r"(?:…|\.{3}|_{3,})", ", blank, ", visible)
         return re.sub(r"\s+", " ", spoken).strip()
     return visible
@@ -136,6 +146,12 @@ def main() -> None:
         action="store_true",
         help="Regenerate only audio changed by the remaining correction rows.",
     )
+    parser.add_argument(
+        "--ids",
+        nargs="+",
+        choices=sorted(BASE_IDS | REMAINING_IDS),
+        help="Regenerate only the listed base text IDs and their Easy Read versions.",
+    )
     args = parser.parse_args()
 
     texts_path = I18N / "texts.json"
@@ -143,7 +159,9 @@ def main() -> None:
     texts = json.loads(texts_path.read_text(encoding="utf-8"))
     audios = json.loads(audios_path.read_text(encoding="utf-8"))
 
-    selected = REMAINING_IDS if args.remaining_only else BASE_IDS | REMAINING_IDS
+    selected = set(args.ids) if args.ids else (
+        REMAINING_IDS if args.remaining_only else BASE_IDS | REMAINING_IDS
+    )
     ids = sorted(selected | {f"{text_id}_easy_read" for text_id in selected})
     missing = [text_id for text_id in ids if text_id not in texts or text_id not in audios]
     if missing:
