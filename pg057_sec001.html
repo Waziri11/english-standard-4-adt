@@ -43,10 +43,10 @@
       }
       #market-dialogue .book-dialogue-line {
         display: grid;
-        grid-template-columns: 5.25rem minmax(0, 1fr);
-        column-gap: 0.9rem;
-        min-width: max-content;
-        white-space: nowrap;
+        grid-template-columns: 11rem minmax(0, 1fr);
+        column-gap: 0.75rem;
+        min-width: 0;
+        white-space: normal;
         color: #27272a;
         font-weight: 400;
         font-size: 1.25rem;
@@ -60,8 +60,8 @@
       @media (max-width: 640px) {
         section[data-section-id="pg057_sec001"] { padding-inline: 1rem !important; }
         #market-dialogue .book-dialogue-line {
-          grid-template-columns: 4.5rem minmax(0, 1fr);
-          column-gap: 0.5rem;
+          grid-template-columns: 11rem minmax(0, 1fr);
+          column-gap: 0.75rem;
           font-size: 1rem;
         }
       }
@@ -106,20 +106,64 @@
         <p data-id="pg057_n0030" class="mb-5 text-2xl italic leading-relaxed text-teal-700 max-lg:text-xl max-sm:text-lg">(a) Act out the following conversation between Iku and Atu, who met at a railway station, by talking/signing.</p>
 
         <div class="space-y-3 text-2xl leading-snug text-zinc-800 max-lg:text-xl max-sm:text-lg">
-          <p data-id="pg057_n0031" class="font-medium text-teal-700">Iku: Hi, I&#x2019;m Iku.</p>
-          <p data-id="pg057_n0032" class="font-medium text-red-600">Atu: Hi, I&#x2019;m Atu.</p>
-          <p data-id="pg057_n0033" class="font-medium text-teal-700">Iku: Where are you going?</p>
-          <p data-id="pg057_n0034" class="font-medium text-red-600">Atu: I&#x2019;m going to Kigoma with my parents.</p>
-          <p data-id="pg057_n0035" class="font-medium text-teal-700">Iku: I am going to Dodoma.</p>
+          <p class="dialogue-row" style="display: grid; grid-template-columns: 11rem minmax(0, 1fr); column-gap: 12px; align-items: start;">
+            <span class="font-bold text-teal-700" aria-hidden="true">Iku:</span>
+            <span aria-hidden="true">Hi, I&#x2019;m Iku.</span>
+            <span data-id="pg057_n0031" class="sr-only">Iku: Hi, I&#x2019;m Iku.</span>
+          </p>
+          <p class="dialogue-row" style="display: grid; grid-template-columns: 11rem minmax(0, 1fr); column-gap: 12px; align-items: start;">
+            <span class="font-bold text-red-600" aria-hidden="true">Atu:</span>
+            <span aria-hidden="true">Hi, I&#x2019;m Atu.</span>
+            <span data-id="pg057_n0032" class="sr-only">Atu: Hi, I&#x2019;m Atu.</span>
+          </p>
+          <p class="dialogue-row" style="display: grid; grid-template-columns: 11rem minmax(0, 1fr); column-gap: 12px; align-items: start;">
+            <span class="font-bold text-teal-700" aria-hidden="true">Iku:</span>
+            <span aria-hidden="true">Where are you going?</span>
+            <span data-id="pg057_n0033" class="sr-only">Iku: Where are you going?</span>
+          </p>
+          <p class="dialogue-row" style="display: grid; grid-template-columns: 11rem minmax(0, 1fr); column-gap: 12px; align-items: start;">
+            <span class="font-bold text-red-600" aria-hidden="true">Atu:</span>
+            <span aria-hidden="true">I&#x2019;m going to Kigoma with my parents.</span>
+            <span data-id="pg057_n0034" class="sr-only">Atu: I&#x2019;m going to Kigoma with my parents.</span>
+          </p>
+          <p class="dialogue-row" style="display: grid; grid-template-columns: 11rem minmax(0, 1fr); column-gap: 12px; align-items: start;">
+            <span class="font-bold text-teal-700" aria-hidden="true">Iku:</span>
+            <span aria-hidden="true">I am going to Dodoma.</span>
+            <span data-id="pg057_n0035" class="sr-only">Iku: I am going to Dodoma.</span>
+          </p>
           <p data-id="pg057_n0036" class="font-medium">I alight at the Dodoma Railway station.</p>
           <p data-id="pg057_n0037" class="font-medium">Do you alight at the Kigoma station?</p>
-          <p data-id="pg057_n0038" class="font-medium text-red-600">Atu: Oh, no.</p>
+          <p class="dialogue-row" style="display: grid; grid-template-columns: 11rem minmax(0, 1fr); column-gap: 12px; align-items: start;">
+            <span class="font-bold text-red-600" aria-hidden="true">Atu:</span>
+            <span aria-hidden="true">Oh, no.</span>
+            <span data-id="pg057_n0038" class="sr-only">Atu: Oh, no.</span>
+          </p>
           <p data-id="pg057_n0039" class="font-medium">We get out at Nguruka station.</p>
-          <p data-id="pg057_n0040" class="font-medium text-teal-700">Iku: What time do you arrive at Nguruka station?</p>
-          <p data-id="pg058_n0002" class="font-medium text-red-600">Atu: It will be tomorrow at aroud 11:00.</p>
-          <p data-id="pg058_n0003" class="font-medium text-teal-700">Iku: Oh, it&#x2019;s time to get on the train. It will depart soon.</p>
-          <p data-id="pg058_n0004" class="font-medium text-red-600">Atu: Ok. Have a safe journey.</p>
-          <p data-id="pg058_n0005" class="font-medium text-teal-700">Iku: You too. Bye.</p>
+          <p class="dialogue-row" style="display: grid; grid-template-columns: 11rem minmax(0, 1fr); column-gap: 12px; align-items: start;">
+            <span class="font-bold text-teal-700" aria-hidden="true">Iku:</span>
+            <span aria-hidden="true">What time do you arrive at Nguruka station?</span>
+            <span data-id="pg057_n0040" class="sr-only">Iku: What time do you arrive at Nguruka station?</span>
+          </p>
+          <p class="dialogue-row" style="display: grid; grid-template-columns: 11rem minmax(0, 1fr); column-gap: 12px; align-items: start;">
+            <span class="font-bold text-red-600" aria-hidden="true">Atu:</span>
+            <span aria-hidden="true">It will be tomorrow at aroud 11:00.</span>
+            <span data-id="pg058_n0002" class="sr-only">Atu: It will be tomorrow at aroud 11:00.</span>
+          </p>
+          <p class="dialogue-row" style="display: grid; grid-template-columns: 11rem minmax(0, 1fr); column-gap: 12px; align-items: start;">
+            <span class="font-bold text-teal-700" aria-hidden="true">Iku:</span>
+            <span aria-hidden="true">Oh, it&#x2019;s time to get on the train. It will depart soon.</span>
+            <span data-id="pg058_n0003" class="sr-only">Iku: Oh, it&#x2019;s time to get on the train. It will depart soon.</span>
+          </p>
+          <p class="dialogue-row" style="display: grid; grid-template-columns: 11rem minmax(0, 1fr); column-gap: 12px; align-items: start;">
+            <span class="font-bold text-red-600" aria-hidden="true">Atu:</span>
+            <span aria-hidden="true">Ok. Have a safe journey.</span>
+            <span data-id="pg058_n0004" class="sr-only">Atu: Ok. Have a safe journey.</span>
+          </p>
+          <p class="dialogue-row" style="display: grid; grid-template-columns: 11rem minmax(0, 1fr); column-gap: 12px; align-items: start;">
+            <span class="font-bold text-teal-700" aria-hidden="true">Iku:</span>
+            <span aria-hidden="true">You too. Bye.</span>
+            <span data-id="pg058_n0005" class="sr-only">Iku: You too. Bye.</span>
+          </p>
         </div>
       </div>
     </div>
