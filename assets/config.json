@@ -1,6 +1,6 @@
 {
   "title": "English Pupil's Book Standard Four",
-  "bundleVersion": "2",
+  "bundleVersion": "3",
   "languages": {
     "available": [
       "en"
@@ -8,7 +8,7 @@
     "default": "en"
   },
   "features": {
-    "signLanguage": false,
+    "signLanguage": true,
     "easyRead": true,
     "glossary": true,
     "eli5": false,
